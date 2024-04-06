@@ -1,153 +1,83 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_starbucks_clone/page/order_page.dart';
+import 'package:flutter_starbucks_clone/page/other_page.dart';
+import 'package:flutter_starbucks_clone/page/pay_page.dart';
+import 'package:flutter_starbucks_clone/page/shop_page.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
-class MainScreen extends StatelessWidget {
+import '../page/home_page.dart';
+
+class MainScreen extends StatefulWidget {
   const MainScreen({
     super.key,
   });
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const HomePage(),
+    const PayPage(),
+    const OrderPage(),
+    const ShopPage(),
+    const OtherPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: Stack(
-                  children: [
-                    Image.asset('assets/starbucks_news.png'),
-                    SizedBox(
-                      height: 211.7,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                '내용 보기',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  backgroundColor: Colors.white38,
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward,
-                                size: 12,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 40,
-                        horizontal: 20,
-                      ),
-                      child: Text(
-                        '''스타벅스 딸기 라떼와
-추운 겨울을 상큼하게!''',
-                        style: TextStyle(
-                            fontSize: 28, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
+          body: _pages[_selectedIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _selectedIndex,
+            items: [
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: '홈',
               ),
-              SliverToBoxAdapter(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '1★ untill Grenn Level',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          SizedBox(
-                            width: 300,
-                            height: 10,
-                            child: LinearProgressIndicator(
-                              backgroundColor: Colors.grey[3000],
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.green),
-                              value: 0.8,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        Text(
-                          '4',
-                          style: TextStyle(fontSize: 40),
-                        ),
-                        Text(
-                          '/5★',
-                          style: TextStyle(fontSize: 27, color: Colors.grey),
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.payment),
+                label: 'Pay',
               ),
-              const SliverAppBar(
-                scrolledUnderElevation: 0,
-                elevation: 1,
-                pinned: true,
-                floating: true,
-                expandedHeight: 0.0,
-                title: Row(
-                  children: [
-                    Icon(Icons.mail_outline),
-                    SizedBox(width: 10),
-                    Text(
-                      'What\'s New',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(width: 10),
-                    Icon(Icons.local_activity_outlined),
-                    SizedBox(width: 10),
-                    Text(
-                      'Coupon',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Spacer(),
-                    Icon(Icons.notifications_none)
-                  ],
-                ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.coffee_outlined),
+                label: 'Order',
               ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  child: Placeholder(),
-                ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_bag_outlined),
+                label: 'Shop',
               ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  child: Placeholder(),
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  child: Placeholder(),
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  child: Placeholder(),
-                ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.more_horiz_outlined),
+                label: 'Other',
               ),
             ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {},
+            label: Text(
+              'Delivers',
+              style: TextStyle(color: Colors.white),
+            ), // 버튼의 라벨 텍스트
+            icon: Icon(
+              Icons.delivery_dining,
+              color: Colors.white,
+            ), // 버튼의 아이콘
+            backgroundColor: Colors.green,
           ),
         ),
       ),
